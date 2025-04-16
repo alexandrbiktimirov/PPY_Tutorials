@@ -135,3 +135,45 @@ def most_frequent_character(input_string):
 input_string = "aa,, bbb!!! ccc dddd ........"
 print(input_string)
 print(most_frequent_character(input_string))
+
+print("\n--- Exercise 16 ---")
+
+def justify_text(words):
+    result = []
+    i = 0
+    max_width = 16
+
+    while i < len(words):
+        line_len = len(words[i])
+        j = i + 1
+
+        while j < len(words) and line_len + len(words[j]) + (j - i) <= max_width:
+            line_len += len(words[j])
+            j += 1
+
+        line_words = words[i:j]
+        spaces_needed = max_width - line_len
+        gaps = len(line_words) - 1
+
+        if gaps == 0:
+            line = ' '.join(line_words).ljust(max_width)
+        else:
+            space_between = spaces_needed // gaps
+            extra_spaces = spaces_needed % gaps
+
+            line = ''
+            for k in range(gaps):
+                line += line_words[k]
+                line += ' ' * (space_between + (1 if k < extra_spaces else 0))
+            line += line_words[-1]
+
+        result.append(line)
+        i = j
+
+    return result
+
+words = ["This", "is", "an", "example", "of", "justified", "text."]
+result = justify_text(words)
+
+for line in result:
+    print(f"{line}")
