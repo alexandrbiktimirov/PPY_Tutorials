@@ -187,3 +187,21 @@ def extract_email(text):
 text = "Contact me at jane.doe@example.com."
 print(extract_email(text))
 
+print("\n--- Exercise 18 ---")
+
+def find_longest_unique_substring(input_string):
+    last_seen = {}
+    start = longest_substring = 0
+
+    for i, char in enumerate(input_string):
+        if char in last_seen and last_seen[char] >= start:
+            start = last_seen[char] + 1
+
+        last_seen[char] = i
+        longest_substring = max(longest_substring, i - start + 1)
+
+    return longest_substring
+
+input_string = "abcabcbb"
+print(input_string)
+print(find_longest_unique_substring(input_string))
