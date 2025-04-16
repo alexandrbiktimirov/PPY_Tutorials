@@ -1,5 +1,6 @@
 import string
 from collections import Counter
+import re
 
 print("\n--- Exercise 1 ---")
 
@@ -116,5 +117,21 @@ print(custom_split(input_string, "ds"))
 
 print("\n--- Exercise 14 ---")
 
-# def scan_for_dates(input_string):
-#
+def scan_for_dates(input_string):
+    pattern = r'\b(\d{2})/(\d{2})/(\d{4})\b'
+    return re.sub(pattern, r'\3-\1-\2', input_string)
+
+
+input_string = "Event on 04/10/2025"
+print(input_string)
+print(scan_for_dates(input_string))
+
+print("\n--- Exercise 15 ---")
+
+def most_frequent_character(input_string):
+    s = [c for c in input_string if c.isalnum()]
+    return Counter(s).most_common(1)[0][0]
+
+input_string = "aa,, bbb!!! ccc dddd ........"
+print(input_string)
+print(most_frequent_character(input_string))
