@@ -118,8 +118,8 @@ print(custom_split(input_string, "ds"))
 print("\n--- Exercise 14 ---")
 
 def scan_for_dates(input_string):
-    pattern = r'\b(\d{2})/(\d{2})/(\d{4})\b'
-    return re.sub(pattern, r'\3-\1-\2', input_string)
+    pattern = r"\b(\d{2})/(\d{2})/(\d{4})\b"
+    return re.sub(pattern, r"\3-\1-\2", input_string)
 
 
 input_string = "Event on 04/10/2025"
@@ -177,3 +177,13 @@ result = justify_text(words)
 
 for line in result:
     print(f"{line}")
+
+print("\n--- Exercise 17 ---")
+
+def extract_email(text):
+    pattern = r"\b[\w\.-]+@[\w\.-]+\b"
+    return re.search(pattern, text).group()
+
+text = "Contact me at jane.doe@example.com."
+print(extract_email(text))
+
