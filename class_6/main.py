@@ -35,14 +35,14 @@ print(every_second_character(chars))
 print("\n--- Exercise 5 ---")
 
 def first_and_last_character(input_string):
-    return input_string[0], input_string[-1]
+    return input_string[0] + input_string[-1]
 
 print(first_and_last_character(chars))
 
 print("\n--- Exercise 6 ---")
 
 def capitalize(input_string):
-    return " ".join([c.capitalize() for c in input_string.split(" ")])
+    return " ".join([c.capitalize() for c in input_string.split()])
 
 input_string = "hello world"
 print(capitalize(input_string))
@@ -94,9 +94,9 @@ def count_frequency(input_string):
 
 print(count_frequency(input_string))
 
-print("\n--- Exercise 12 ---")
+print("\n--- Exercise 13 ---")
 
-def custom_split(input_string, delimiter):
+def custom_split(input_string, delimiter=" "):
     result, delim_len = [], len(delimiter)
     idx = 0
 
@@ -155,7 +155,7 @@ def justify_text(words):
         spaces_needed = max_width - line_len
         gaps = len(line_words) - 1
 
-        if gaps == 0:
+        if j == len(words) or gaps == 0:
             line = ' '.join(line_words).ljust(max_width)
         else:
             space_between = spaces_needed // gaps
@@ -182,7 +182,7 @@ print("\n--- Exercise 17 ---")
 
 def extract_email(text):
     pattern = r"\b[\w\.-]+@[\w\.-]+\b"
-    return re.search(pattern, text).group()
+    return re.findall(pattern, text)
 
 text = "Contact me at jane.doe@example.com."
 print(extract_email(text))
