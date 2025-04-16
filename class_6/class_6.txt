@@ -1,0 +1,59 @@
+--- Exercise 1 ---
+olleh
+
+--- Exercise 2 ---
+2
+
+--- Exercise 3 ---
+True
+
+--- Exercise 4 ---
+bdf
+
+--- Exercise 5 ---
+ag
+
+--- Exercise 6 ---
+Hello World
+
+--- Exercise 7 ---
+pYtHoN
+
+--- Exercise 8 ---
+2
+
+--- Exercise 9 ---
+hello-world
+
+--- Exercise 10 ---
+True
+
+--- Exercise 11 ---
+Some, sentence. with? punctuation!
+Some sentence with punctuation
+
+--- Exercise 12 ---
+{'Some': 1, 'sentence': 1, 'with': 1, 'punctuation': 1}
+
+--- Exercise 13 ---
+['Some, sentence. with? punctuation!']
+
+--- Exercise 14 ---
+Event on 04/10/2025
+Event on 2025-04-10
+
+--- Exercise 15 ---
+aa,, bbb!!! ccc dddd ........
+d
+
+--- Exercise 16 ---
+This    is    an
+example       of
+justified text.
+
+--- Exercise 17 ---
+['jane.doe@example.com']
+
+--- Exercise 18 ---
+abcabcbb
+3
