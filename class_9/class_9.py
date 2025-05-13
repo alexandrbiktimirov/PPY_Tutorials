@@ -1,3 +1,6 @@
+import re
+from os.path import split
+
 print("\n--- Exercise 1 ---")
 def count_up_to(n):
     for i in range(1, n - 1):
@@ -80,7 +83,83 @@ p.send("world!")
 
 print("\n--- Exercise 8 ---")
 def running_average():
+    total = 0.0
+    count = 0
+    average = None
+
     while True:
-        numbers = yield
-        window = []
-        total = 0
+        value = yield average
+        total += value
+        count += 1
+        average = total / count
+
+r_a = running_average()
+next(r_a)
+
+print(r_a.send(10))
+print(r_a.send(50))
+print(r_a.send(100))
+
+print("\n--- Exercise 9 ---")
+def keyword_filter(keyword):
+    print(f"Filtering messages with keyword: '{keyword}'")
+
+    while True:
+        message = (yield)
+        if keyword in message:
+            print(message)
+
+k_f = keyword_filter("python")
+next(k_f)
+
+k_f.send("Hello, Python")
+k_f.send("This message will not be printed")
+k_f.send("But this message will be printed, because of Python")
+
+k_f.close()
+
+print("\n--- Exercise 10 ---")
+def produce_numbers(n):
+    for i in range(n):
+        yield i
+
+def double_numbers(target):
+    while True:
+        number = (yield)
+        target.send(number * 2)
+
+def print_results():
+    while True:
+        result = (yield)
+        print("Result:", result)
+
+printer = print_results()
+next(printer)
+
+d_n = double_numbers(printer)
+next(d_n)
+
+for number in produce_numbers(10):
+    d_n.send(number)
+
+d_n.close()
+
+print("\n--- Exercise 11 ---")
+def regex_matcher(pattern):
+    print(f"Filtering messages with pattern: '{pattern}'")
+
+    while True:
+        message = yield
+        for line in message.split('\n'):
+            if re.findall(pattern, line):
+                print(line)
+
+r_m = regex_matcher("")
+
+matcher = regex_matcher(r"\berror\b")
+next(matcher)
+
+matcher.send("This line is not printed\n(but this is printed) critical error occurred\nthis is a note")
+matcher.send("warning only\nno issue\nerror on line 3")
+
+matcher.close()
