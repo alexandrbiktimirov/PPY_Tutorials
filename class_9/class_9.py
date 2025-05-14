@@ -1,5 +1,7 @@
 import re
-from os.path import split
+import os
+import time
+import asyncio
 
 print("\n--- Exercise 1 ---")
 def count_up_to(n):
@@ -163,3 +165,179 @@ matcher.send("This line is not printed\n(but this is printed) critical error occ
 matcher.send("warning only\nno issue\nerror on line 3")
 
 matcher.close()
+
+print("\n--- Exercise 12 ---")
+def printer():
+    try:
+        while True:
+            value = yield
+            print(value)
+    except GeneratorExit:
+        print("Shutting down...")
+
+p = printer()
+next(p)
+
+p.send("Hello cleanup")
+
+p.close()
+
+print("\n--- Exercise 13 ---")
+def info_handler():
+    try:
+        while True:
+            event = yield
+            print("[INFO]", event)
+    except GeneratorExit:
+        print("Info handler shutting down...")
+
+def error_handler():
+    try:
+        while True:
+            event = yield
+            print("[ERROR]", event)
+    except GeneratorExit:
+        print("Error handler shutting down...")
+
+def debug_handler():
+    try:
+        while True:
+            event = yield
+            print("[DEBUG]", event)
+    except GeneratorExit:
+        print("Debug handler shutting down...")
+
+def event_dispatcher(handlers):
+    try:
+        while True:
+            event = yield
+            for prefix, handler in handlers.items():
+                if event.startswith(prefix):
+                    handler.send(event)
+                    break
+    except GeneratorExit:
+        for handler in handlers.values():
+            handler.close()
+        print("Dispatcher shutting down...")
+
+info = info_handler(); next(info)
+error = error_handler(); next(error)
+debug = debug_handler(); next(debug)
+
+disp = event_dispatcher({
+    "info:": info,
+    "error:": error,
+    "debug:": debug
+})
+
+next(disp)
+
+disp.send("info: Application started")
+disp.send("debug: Initializing modules")
+disp.send("error: Failure encountered")
+disp.close()
+
+print("\n--- Exercise 14 ---")
+def number_generator(n):
+    for i in range(1, n + 1):
+        yield i
+
+def multiplier(m):
+    try:
+        while True:
+            value = yield
+            result = value * m
+            feedback = yield result
+            print(f"Multiplier received feedback: {feedback}")
+    except GeneratorExit:
+        print("Multiplier shutting down...")
+
+def running_average():
+    total = count = 0
+    avg = None
+
+    try:
+        while True:
+            value = yield avg
+            count += 1
+            total += value
+            avg = total / count
+    except GeneratorExit:
+        print("Running average shutting down...")
+
+nums = number_generator(5)
+
+mul = multiplier(2)
+next(mul)
+
+avg_calc = running_average()
+next(avg_calc)
+
+for num in nums:
+    doubled = mul.send(num)
+    average = avg_calc.send(doubled)
+    print(f"Num: {num}, Doubled: {doubled}, Running Average: {average}")
+    mul.send(f"Processed {doubled}")
+
+mul.close()
+avg_calc.close()
+
+print("\n--- Exercise 15 ---")
+def txt_line_reader(root):
+    for dirpath, dirnames, filenames in os.walk(root):
+        for fname in filenames:
+            if fname.endswith(".txt"):
+                filepath = os.path.join(dirpath, fname)
+                with open(filepath, encoding="utf-8") as f:
+                    for line in f:
+                        yield line.rstrip("\n")
+
+os.makedirs("test_dir/sub", exist_ok=True)
+
+with open("test_dir/file1.txt", "w", encoding="utf-8") as f:
+    f.write("Line1\nLine2\n")
+
+with open("test_dir/sub/file2.txt", "w", encoding="utf-8") as f:
+    f.write("SubLine1\nSubLine2\n")
+
+print(list(txt_line_reader("test_dir")))
+
+print("\n--- Exercise 16 ---")
+def rate_limiter(max_per_sec):
+    interval = 1.0 / max_per_sec
+    last_time = None
+
+    try:
+        while True:
+            task = yield
+            now = time.time()
+            if last_time is not None:
+                to_wait = interval - (now - last_time)
+                if to_wait > 0:
+                    time.sleep(to_wait)
+            print(f"{time.strftime('%X')} - Processing task: {task}")
+            last_time = time.time()
+    except GeneratorExit:
+        print("Rate limiter shutting down...")
+
+r_l = rate_limiter(2)
+next(r_l)
+
+for i in range(5):
+    r_l.send(f"task {i + 1}")
+r_l.close()
+
+print("\n--- Exercise 17 ---")
+async def task(name, delay):
+    print(f"{time.strftime('%X')} - Task {name} starting (delay {delay}s)")
+    await asyncio.sleep(delay)
+    print(f"{time.strftime('%X')} - Task {name} completed")
+
+async def main():
+    await asyncio.gather(
+        task("A", 1),
+        task("B", 1.5),
+        task("C", 0.5)
+    )
+
+asyncio.run(main())
