@@ -5,7 +5,7 @@ import asyncio
 
 print("\n--- Exercise 1 ---")
 def count_up_to(n):
-    for i in range(1, n - 1):
+    for i in range(1, n + 1):
         yield i
 
 for i in count_up_to(5):
