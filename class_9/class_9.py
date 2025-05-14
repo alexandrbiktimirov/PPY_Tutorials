@@ -69,6 +69,7 @@ def generate_primes():
 
         number += 1
 
+print("This function was not included in the output due to it being infinite")
 # for i in generate_primes():
 #     print(i)
 
