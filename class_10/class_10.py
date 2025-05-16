@@ -67,11 +67,16 @@ print(categorize_characters("Hello, World! 123"))
 
 print("\nShopping cart with discounts")
 def calculate_total(cart):
-    total = sum(cart.values())
+    total = 0
+
+    for item in cart.items():
+        if item[1] > 50:
+            total += item[1] * 0.95
+        else:
+            total += item[1]
+
     if total > 100:
         return total * 0.9
-    elif total > 50:
-        return total * 0.95
 
     return total
 
