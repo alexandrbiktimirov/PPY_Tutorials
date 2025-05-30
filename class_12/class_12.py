@@ -60,8 +60,12 @@ print("\n--- Exercise 4 ---")
 class Shape:
     def area(self):
         ...
+
 class Rectangle(Shape):
     def __init__(self, width, height):
+        if width == 0 or height == 0:
+            raise ValueError("Rectangle must have at least two non-zero integers")
+
         self.width = width
         self.height = height
 
@@ -71,9 +75,11 @@ class Rectangle(Shape):
 class Circle(Shape):
     def __init__(self, radius):
         self.radius = radius
+        if radius == 0:
+            raise ValueError("Circle must have a non-zero radius")
 
     def area(self):
-        print(f"Circle area is : {3.14 * self.radius**2}")
+        print(f"Circle area is : {3.14159 * self.radius**2}")
 
 Rectangle = Rectangle(100, 200)
 Rectangle.area()
