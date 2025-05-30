@@ -63,8 +63,8 @@ class Shape:
 
 class Rectangle(Shape):
     def __init__(self, width, height):
-        if width == 0 or height == 0:
-            raise ValueError("Rectangle must have at least two non-zero integers")
+        if width <= 0 or height <= 0:
+            raise ValueError("Width and height must be positive")
 
         self.width = width
         self.height = height
@@ -75,8 +75,8 @@ class Rectangle(Shape):
 class Circle(Shape):
     def __init__(self, radius):
         self.radius = radius
-        if radius == 0:
-            raise ValueError("Circle must have a non-zero radius")
+        if radius <= 0:
+            raise ValueError("Radius must be positive")
 
     def area(self):
         print(f"Circle area is : {3.14159 * self.radius**2}")
@@ -205,16 +205,16 @@ class FileReader:
     def __init__(self, filename):
         self.filename = filename
 
-    def open_file(self):
+    def read_file(self, filename):
         try:
-            with open(self.filename) as file:
+            with open(filename) as file:
                 return file.read()
         except FileNotFoundError as e:
             print(e)
             return None
 
 file = FileReader("test.txt")
-file.open_file()
+file.read_file("test.txt")
 
 print("\n--- Exercise 12 ---")
 
@@ -252,7 +252,7 @@ class UserInputValidator:
     @staticmethod
     def get_age(age):
         if type(age) != int:
-            raise ValueError(1.5)
+            raise ValueError("Age must be an integer")
 
 try:
     UserInputValidator.get_age(1.5)
